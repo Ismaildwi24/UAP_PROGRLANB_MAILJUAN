@@ -12,12 +12,12 @@ public class DashboardPanel extends JPanel {
 
     public DashboardPanel(MainApp app) {
         setLayout(new BorderLayout());
-        setBackground(new Color(240, 248, 255)); // Alice Blue
+        setBackground(new Color(240, 248, 255)); 
 
         // ===== HEADER SECTION =====
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
-        headerPanel.setBackground(new Color(176, 224, 230)); // Powder Blue
+        headerPanel.setBackground(new Color(176, 224, 230)); 
         headerPanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(70, 130, 180), 2),
             BorderFactory.createEmptyBorder(30, 40, 30, 40)
@@ -25,12 +25,12 @@ public class DashboardPanel extends JPanel {
 
         JLabel title = new JLabel("Selamat Datang, Nakes!");
         title.setFont(new Font("SansSerif", Font.BOLD, 28));
-        title.setForeground(new Color(25, 25, 112)); // Midnight Blue
+        title.setForeground(new Color(25, 25, 112));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel subtitle = new JLabel("Selamat Bekerja");
         subtitle.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        subtitle.setForeground(new Color(0, 0, 139)); // Dark Blue
+        subtitle.setForeground(new Color(0, 0, 139)); 
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         headerPanel.add(title);
@@ -45,7 +45,7 @@ public class DashboardPanel extends JPanel {
         }, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Make table non-editable
+                return false; 
             }
         };
 
@@ -54,10 +54,10 @@ public class DashboardPanel extends JPanel {
         
         loadRecentData();
 
-        // Batasi tinggi tabel sesuai jumlah baris (maksimal 10 baris + header)
+        // 10 baris tabel udh header jg
         int rowHeight = table.getRowHeight();
         int headerHeight = table.getTableHeader().getPreferredSize().height;
-        int maxTableHeight = (10 * rowHeight) + headerHeight + 5; // 10 baris + header + sedikit padding
+        int maxTableHeight = (10 * rowHeight) + headerHeight + 5;
         
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(70, 130, 180), 2));
@@ -90,19 +90,19 @@ public class DashboardPanel extends JPanel {
     private void styleTable() {
         table.setFont(new Font("SansSerif", Font.PLAIN, 13));
         table.setRowHeight(35);
-        table.setSelectionBackground(new Color(173, 216, 230)); // Light Blue
-        table.setSelectionForeground(new Color(25, 25, 112)); // Midnight Blue
-        table.setGridColor(new Color(135, 206, 250)); // Light Sky Blue
+        table.setSelectionBackground(new Color(173, 216, 230)); 
+        table.setSelectionForeground(new Color(25, 25, 112)); 
+        table.setGridColor(new Color(135, 206, 250)); 
         table.setBackground(Color.WHITE);
-        table.setForeground(new Color(0, 0, 139)); // Dark Blue
+        table.setForeground(new Color(0, 0, 139)); 
         
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
-        table.getTableHeader().setBackground(new Color(70, 130, 180)); // Steel Blue
+        table.getTableHeader().setBackground(new Color(70, 130, 180)); 
         table.getTableHeader().setForeground(Color.WHITE);
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setPreferredSize(new Dimension(table.getTableHeader().getWidth(), 40));
         
-        // Set column widths
+        // lebar kolom
         table.getColumnModel().getColumn(0).setPreferredWidth(50); // No
         table.getColumnModel().getColumn(1).setPreferredWidth(100); // ID Bayi
         table.getColumnModel().getColumn(2).setPreferredWidth(120); // Tanggal
@@ -124,12 +124,12 @@ public class DashboardPanel extends JPanel {
         table.getColumnModel().getColumn(18).setPreferredWidth(80); // MR
         table.getColumnModel().getColumn(19).setPreferredWidth(200); // Catatan
         
-        // Custom renderer untuk kolom No agar selalu urut 1, 2, 3... berdasarkan urutan view
+       
         table.getColumnModel().getColumn(0).setCellRenderer(new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                // Gunakan view index langsung agar nomor selalu urut 1, 2, 3... berdasarkan urutan yang terlihat
+
                 ((JLabel) c).setText(String.valueOf(row + 1));
                 ((JLabel) c).setHorizontalAlignment(JLabel.CENTER);
                 return c;
@@ -140,7 +140,7 @@ public class DashboardPanel extends JPanel {
     private void loadRecentData() {
         java.util.List<String[]> allData = CSVHelper.readAll();
         
-        // Ambil maksimal 10 data terbaru (dari akhir list)
+        // ngambil maks 10 data terbaru
         int startIndex = Math.max(0, allData.size() - 10);
         
         for (int i = startIndex; i < allData.size(); i++) {
@@ -164,7 +164,6 @@ public class DashboardPanel extends JPanel {
         
         // Deteksi format berdasarkan jumlah field
         if (d.length >= 16) {
-            // New format dengan ID (16 fields)
             babyId = (d.length > 1 && d[1] != null) ? d[1] : "";
             nama = (d.length > 2 && d[2] != null) ? d[2] : "";
             gender = (d.length > 3 && d[3] != null) ? d[3] : "";
@@ -181,7 +180,7 @@ public class DashboardPanel extends JPanel {
             mr = parseBooleanSafe(d[14]);
             catatan = (d.length > 15 && d[15] != null && !d[15].equals("false")) ? d[15] : "";
         } else if (d.length >= 15) {
-            // Format dengan gender dan motherName tanpa ID (15 fields)
+            // Format dengan gender dan motherName tanpa ID
             babyId = "";
             nama = d[1];
             gender = (d.length > 2 && d[2] != null) ? d[2] : "";
@@ -198,7 +197,7 @@ public class DashboardPanel extends JPanel {
             mr = parseBooleanSafe(d[13]);
             catatan = (d.length > 14 && d[14] != null && !d[14].equals("false")) ? d[14] : "";
         } else if (d.length >= 13) {
-            // Format 13 fields (tanpa gender, motherName, dan ID)
+            //gada gender, motherName, dan ID
             babyId = "";
             nama = d[1];
             gender = "";
@@ -215,7 +214,6 @@ public class DashboardPanel extends JPanel {
             mr = parseBooleanSafe(d[11]);
             catatan = (d.length > 12 && d[12] != null && !d[12].equals("false")) ? d[12] : "";
         } else {
-            // Old format: 4 vaksin (backward compatibility)
             babyId = "";
             nama = d[1];
             gender = "";
@@ -242,7 +240,7 @@ public class DashboardPanel extends JPanel {
         String catatanDisplay = (catatan == null || catatan.equals("false") || catatan.trim().isEmpty()) ? "" : catatan;
     
         model.addRow(new Object[]{
-                        "", // No akan diisi oleh renderer
+                        "", 
                         babyId, tanggal, nama, gender, motherName,
                         String.format("%.1f", berat) + " kg", 
                         String.format("%.1f", tinggi) + " cm",
