@@ -22,10 +22,6 @@ public class CSVHelper {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
-                // Split dengan limit untuk menangani catatan yang mungkin mengandung koma
-                // Format terbaru (16 fields): date,babyId,name,gender,motherName,weight,height,temp,hepB,bcg,polio,pentabio,pcv,rotavirus,mr,note
-    
-                // Total maksimal 16 field, jadi split dengan limit 16
                 String[] parts = line.split(",", 16);
                 list.add(parts);
             }
