@@ -23,23 +23,20 @@ public class HistoryPanel extends JPanel {
         }, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // tabelx gbisa diedit smbarangan
+                return false;
             }
         };
 
         table = new JTable(model);
         styleTable();
-        
-        // sorting base on id bayi
+
         TableRowSorter<DefaultTableModel> tableSorter = new TableRowSorter<>(model);
         table.setRowSorter(tableSorter);
-        // kolom nomor (index 0) tidak bisa di-sort
         tableSorter.setSortable(0, false);
-        tableSorter.toggleSortOrder(1); // sort by ID column 
+        tableSorter.toggleSortOrder(1);
         
         loadData();
 
-        // Search Panel
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         searchPanel.setBackground(new Color(240, 248, 255));
         searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
@@ -55,8 +52,7 @@ public class HistoryPanel extends JPanel {
             BorderFactory.createEmptyBorder(8, 12, 8, 12)
         ));
         searchField.setToolTipText("Masukkan ID bayi (contoh: M0001, F0002)");
-        
-        // search logika
+
         final TableRowSorter<DefaultTableModel> finalSorter = tableSorter;
         searchField.addActionListener(e -> searchById(searchField.getText().trim(), finalSorter));
         searchField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
@@ -120,8 +116,7 @@ public class HistoryPanel extends JPanel {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getHorizontalScrollBar().setUnitIncrement(20);
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-        
-        // byar bisa scroll horizontal
+
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         JPanel buttonPanel = new JPanel();
@@ -141,12 +136,11 @@ public class HistoryPanel extends JPanel {
             sorter.setRowFilter(null);
             return;
         }
-        
-        // filter berdasarkan ID Bayi 
+
         RowFilter<DefaultTableModel, Object> filter = new RowFilter<DefaultTableModel, Object>() {
             @Override
             public boolean include(RowFilter.Entry<? extends DefaultTableModel, ? extends Object> entry) {
-                String idValue = entry.getStringValue(1).toString().toUpperCase(); // Index 1 untuk ID Bayi
+                String idValue = entry.getStringValue(1).toString().toUpperCase();
                 String searchUpper = searchText.toUpperCase();
                 return idValue.contains(searchUpper);
             }
@@ -169,28 +163,27 @@ public class HistoryPanel extends JPanel {
         table.getTableHeader().setForeground(Color.WHITE);
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setPreferredSize(new Dimension(table.getTableHeader().getWidth(), 40));
-        
-        // lebarx diatur byar kliatan smuax
-        table.getColumnModel().getColumn(0).setPreferredWidth(50); // No
-        table.getColumnModel().getColumn(1).setPreferredWidth(100); // ID Bayi
-        table.getColumnModel().getColumn(2).setPreferredWidth(120); // Tanggal
-        table.getColumnModel().getColumn(3).setPreferredWidth(150); // Nama
-        table.getColumnModel().getColumn(4).setPreferredWidth(100); // Kelamin
-        table.getColumnModel().getColumn(5).setPreferredWidth(150); // Nama Ibu
-        table.getColumnModel().getColumn(6).setPreferredWidth(100); // BB
-        table.getColumnModel().getColumn(7).setPreferredWidth(100); // TB
-        table.getColumnModel().getColumn(8).setPreferredWidth(110); // BB Ideal
-        table.getColumnModel().getColumn(9).setPreferredWidth(100); // Status BB
-        table.getColumnModel().getColumn(10).setPreferredWidth(100); // Suhu
-        table.getColumnModel().getColumn(11).setPreferredWidth(120); // Status Suhu
-        table.getColumnModel().getColumn(12).setPreferredWidth(90); // Hepatitis B
-        table.getColumnModel().getColumn(13).setPreferredWidth(80); // BCG
-        table.getColumnModel().getColumn(14).setPreferredWidth(80); // Polio
-        table.getColumnModel().getColumn(15).setPreferredWidth(90); // Pentabio
-        table.getColumnModel().getColumn(16).setPreferredWidth(80); // PCV
-        table.getColumnModel().getColumn(17).setPreferredWidth(90); // Rotavirus
-        table.getColumnModel().getColumn(18).setPreferredWidth(80); // MR
-        table.getColumnModel().getColumn(19).setPreferredWidth(200); // Catatan
+
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        table.getColumnModel().getColumn(1).setPreferredWidth(100);
+        table.getColumnModel().getColumn(2).setPreferredWidth(120);
+        table.getColumnModel().getColumn(3).setPreferredWidth(150);
+        table.getColumnModel().getColumn(4).setPreferredWidth(100);
+        table.getColumnModel().getColumn(5).setPreferredWidth(150);
+        table.getColumnModel().getColumn(6).setPreferredWidth(100);
+        table.getColumnModel().getColumn(7).setPreferredWidth(100);
+        table.getColumnModel().getColumn(8).setPreferredWidth(110);
+        table.getColumnModel().getColumn(9).setPreferredWidth(100);
+        table.getColumnModel().getColumn(10).setPreferredWidth(100);
+        table.getColumnModel().getColumn(11).setPreferredWidth(120);
+        table.getColumnModel().getColumn(12).setPreferredWidth(90);
+        table.getColumnModel().getColumn(13).setPreferredWidth(80);
+        table.getColumnModel().getColumn(14).setPreferredWidth(80);
+        table.getColumnModel().getColumn(15).setPreferredWidth(90);
+        table.getColumnModel().getColumn(16).setPreferredWidth(80);
+        table.getColumnModel().getColumn(17).setPreferredWidth(90);
+        table.getColumnModel().getColumn(18).setPreferredWidth(80);
+        table.getColumnModel().getColumn(19).setPreferredWidth(200);
         
         table.getColumnModel().getColumn(0).setCellRenderer(new javax.swing.table.DefaultTableCellRenderer() {
             @Override
@@ -231,7 +224,6 @@ public class HistoryPanel extends JPanel {
     private void loadData() {
         originalData = CSVHelper.readAll();
         for (String[] d : originalData) {
-            // date,babyId,name,gender,motherName,weight,height,temp,hepB,bcg,polio,pentabio,pcv,rotavirus,mr,note
             if (d.length >= 10) {
                 String tanggal = formatDate(d[0]);
                 String babyId = "";
@@ -387,7 +379,6 @@ public class HistoryPanel extends JPanel {
         return String.format("%s%04d", prefix, nextNumber);
     }
 
-  // rumus brat bdn ideal
     private double calculateIdealWeight(double height) {
         if (height < 60) {
             return Math.max(2.0, (height / 2.0) - 2.0);
@@ -443,8 +434,7 @@ public class HistoryPanel extends JPanel {
         try {
             String tempStr = suhuStr.replace(',', '.');
             double temp = Double.parseDouble(tempStr);
-            
-     // klasifikasi suhux
+
             if (temp >= 36.5 && temp <= 37.5) {
                 return "Normal";
             } else if (temp > 37.5 && temp <= 38.5) {
@@ -490,15 +480,13 @@ public class HistoryPanel extends JPanel {
         if (catatan.equals("false")) {
             catatan = "";
         }
-        
-        // dialogx
+
         JDialog editDialog = new JDialog((java.awt.Frame) SwingUtilities.getWindowAncestor(this), "Edit Data Kesehatan Bayi", true);
         editDialog.setLayout(new BorderLayout());
         editDialog.setSize(650, 750);
         editDialog.setLocationRelativeTo(this);
         editDialog.getContentPane().setBackground(new Color(240, 248, 255));
-        
-        // Header Panel
+
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(new Color(70, 130, 180));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -506,14 +494,12 @@ public class HistoryPanel extends JPanel {
         headerLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
         headerLabel.setForeground(Color.WHITE);
         headerPanel.add(headerLabel);
-        
-        // Main form panel dengan scroll
+
         JPanel mainFormPanel = new JPanel();
         mainFormPanel.setLayout(new BoxLayout(mainFormPanel, BoxLayout.Y_AXIS));
         mainFormPanel.setBackground(new Color(240, 248, 255));
         mainFormPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        
-        // Data Dasar Card
+
         JPanel basicCard = createEditCard("Data Dasar");
         JPanel basicForm = new JPanel(new GridLayout(0, 2, 15, 15));
         basicForm.setOpaque(false);
@@ -557,8 +543,7 @@ public class HistoryPanel extends JPanel {
         basicForm.add(suhuField);
         
         basicCard.add(basicForm, BorderLayout.CENTER);
-        
-        // vaksinasi Card
+
         JPanel vaccineCard = createEditCard("Status Vaksinasi");
         JPanel vaccineForm = new JPanel(new GridLayout(0, 2, 15, 15)); 
         vaccineForm.setOpaque(false);
@@ -665,7 +650,7 @@ public class HistoryPanel extends JPanel {
                                 if (newOrig[1] == null || newOrig[1].isEmpty()) {
                                     newOrig[1] = babyIdKey; 
                                 }
-                                // yg kosong diisi default
+
                                 if (newOrig[3] == null || newOrig[3].isEmpty()) newOrig[3] = "";
                                 if (newOrig[4] == null || newOrig[4].isEmpty()) newOrig[4] = "";
                                 orig = newOrig;
@@ -693,8 +678,7 @@ public class HistoryPanel extends JPanel {
                         }
                     }
                 }
-                
-                // save trs refresh
+
                 saveAllData();
                 refreshData();
                 editDialog.dispose();
@@ -846,11 +830,9 @@ public class HistoryPanel extends JPanel {
                 }
             }
         }
-        
-        // convert ke CSV format
+
         for (String[] d : remainingData) {
             if (d.length >= 10) {
-                // Format tanggal ke dd-mm-yyyy jika belum
                 String tanggal = formatDate(d[0]);
                 if (d.length >= 16) {
                     String babyIdValue = (d.length > 1 && d[1] != null) ? d[1] : "";

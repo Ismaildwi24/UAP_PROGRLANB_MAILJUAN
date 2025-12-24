@@ -16,7 +16,6 @@ public class LoginPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(240, 248, 255));
 
-        // ===== HEADER =====
         JPanel header = new JPanel();
         header.setBackground(new Color(176, 224, 230)); 
         header.setBorder(BorderFactory.createCompoundBorder(
@@ -41,12 +40,10 @@ public class LoginPanel extends JPanel {
         header.add(Box.createVerticalStrut(8));
         header.add(subtitle);
 
-        // ===== MAIN CONTENT =====
         JPanel mainContent = new JPanel(new BorderLayout(30, 0));
         mainContent.setBackground(new Color(240, 248, 255));
         mainContent.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
-        // ===== PANEL GAMBAR =====
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setBackground(new Color(240, 248, 255));
         imagePanel.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0)); 
@@ -56,8 +53,25 @@ public class LoginPanel extends JPanel {
         imageLabel.setVerticalAlignment(JLabel.CENTER);
         
         try {
-            ImageIcon icon = new ImageIcon("src/assets/medicalillustration.png");
-            if (icon.getIconWidth() > 0 && icon.getIconHeight() > 0) {      
+            String[] possiblePaths = {
+                "src/assests/medicalillustration.png",
+                "assests/medicalillustration.png",
+                "src/assets/medicalillustration.png",
+                "assets/medicalillustration.png"
+            };
+            
+            ImageIcon icon = null;
+            for (String path : possiblePaths) {
+                java.io.File file = new java.io.File(path);
+                if (file.exists()) {
+                    icon = new ImageIcon(path);
+                    if (icon.getIconWidth() > 0 && icon.getIconHeight() > 0) {
+                        break;
+                    }
+                }
+            }
+            
+            if (icon != null && icon.getIconWidth() > 0 && icon.getIconHeight() > 0) {      
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 int maxWidth = (int) (screenSize.width * 0.45); 
                 int maxHeight = (int) (screenSize.height * 0.65); 
@@ -76,11 +90,11 @@ public class LoginPanel extends JPanel {
                 imageLabel.setIcon(new ImageIcon(img));
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         imagePanel.add(imageLabel, BorderLayout.CENTER);
 
-        // ===== PANEL FORM LOGIN (KANAN) =====
         JPanel loginPanel = new JPanel(new GridBagLayout());
         loginPanel.setBackground(new Color(240, 248, 255));
         loginPanel.setPreferredSize(new Dimension(450, 0));
@@ -89,7 +103,6 @@ public class LoginPanel extends JPanel {
         gbcForm.insets = new Insets(10, 10, 10, 10);
         gbcForm.anchor = GridBagConstraints.WEST;
 
-        // login form Card
         JPanel loginCard = new JPanel(new BorderLayout());
         loginCard.setBackground(Color.WHITE);
         loginCard.setBorder(BorderFactory.createCompoundBorder(
@@ -101,14 +114,12 @@ public class LoginPanel extends JPanel {
         loginForm.setLayout(new BoxLayout(loginForm, BoxLayout.Y_AXIS));
         loginForm.setOpaque(false);
 
-        // title login
         JLabel loginTitle = new JLabel("Login");
         loginTitle.setFont(new Font("SansSerif", Font.BOLD, 28));
         loginTitle.setForeground(new Color(25, 25, 112));
         loginTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         loginTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0)); 
 
-        // username field
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setFont(new Font("SansSerif", Font.BOLD, 15));
         usernameLabel.setForeground(new Color(25, 25, 112));
@@ -123,8 +134,7 @@ public class LoginPanel extends JPanel {
         ));
         usernameField.setPreferredSize(new Dimension(0, 50));
         usernameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-        usernameField.setAlignmentX(Component.CENTER_ALIGNMENT); 
-        // password field ad tombol show ama hidenya
+        usernameField.setAlignmentX(Component.CENTER_ALIGNMENT);
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("SansSerif", Font.BOLD, 15));
         passwordLabel.setForeground(new Color(25, 25, 112));
@@ -170,7 +180,6 @@ public class LoginPanel extends JPanel {
         passwordPanel.add(passwordField, BorderLayout.CENTER);
         passwordPanel.add(showPasswordBtn, BorderLayout.EAST);
 
-        // login button
         JButton loginBtn = new JButton("🔐 Login");
         loginBtn.setFont(new Font("SansSerif", Font.BOLD, 18));
         loginBtn.setBackground(new Color(70, 130, 180)); 
@@ -178,12 +187,12 @@ public class LoginPanel extends JPanel {
         loginBtn.setFocusPainted(false);
         loginBtn.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(25, 25, 112), 2),
-            BorderFactory.createEmptyBorder(15, 30, 15, 30)
+            BorderFactory.createEmptyBorder(8, 30, 15, 30)
         ));
         loginBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         loginBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         loginBtn.setMaximumSize(new Dimension(Integer.MAX_VALUE, 55));
-        loginBtn.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
+        loginBtn.setMargin(new Insets(5, 30, 15, 30));
 
         loginBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -197,15 +206,13 @@ public class LoginPanel extends JPanel {
         loginBtn.addActionListener(e -> {
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword());
-            
-            // validasi
+
             if (username.isEmpty() || password.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Username dan password harus diisi!", 
                     "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
-            // login
+
             app.showMainApp();
         });
 
@@ -219,7 +226,7 @@ public class LoginPanel extends JPanel {
         loginForm.add(Box.createVerticalStrut(5));
         loginForm.add(passwordLabel);
         loginForm.add(passwordPanel);
-        loginForm.add(Box.createVerticalStrut(10)); 
+        loginForm.add(Box.createVerticalStrut(15)); 
         loginForm.add(loginBtn);
 
         loginCard.add(loginForm, BorderLayout.CENTER);
@@ -231,7 +238,6 @@ public class LoginPanel extends JPanel {
         gbcForm.weighty = 1.0;
         loginPanel.add(loginCard, gbcForm);
 
-        // ada gambar di kiri ama form di kanan
         mainContent.add(imagePanel, BorderLayout.WEST);
         mainContent.add(loginPanel, BorderLayout.EAST);
 

@@ -26,7 +26,7 @@ public class CSVHelper {
                 list.add(parts);
             }
         } catch (IOException e) {
-            // file belum ada
+
         }
         return list;
     }

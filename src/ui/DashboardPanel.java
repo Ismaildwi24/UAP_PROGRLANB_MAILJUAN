@@ -14,7 +14,6 @@ public class DashboardPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(new Color(240, 248, 255)); 
 
-        // ===== HEADER SECTION =====
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
         headerPanel.setBackground(new Color(176, 224, 230)); 
@@ -37,7 +36,6 @@ public class DashboardPanel extends JPanel {
         headerPanel.add(Box.createVerticalStrut(10));
         headerPanel.add(subtitle);
 
-        // ===== TABLE SECTION =====
         model = new DefaultTableModel(new String[]{
                 "No", "ID Bayi", "Tanggal", "Nama", "Kelamin", "Nama Ibu", "BB", "TB", "BB Ideal", "Status BB", 
                 "Suhu", "Status Suhu", "Hepatitis B", "BCG", "Polio", "Pentabio", "PCV", 
@@ -54,7 +52,6 @@ public class DashboardPanel extends JPanel {
         
         loadRecentData();
 
-        // 10 baris tabel udh header jg
         int rowHeight = table.getRowHeight();
         int headerHeight = table.getTableHeader().getPreferredSize().height;
         int maxTableHeight = (10 * rowHeight) + headerHeight + 5;
@@ -70,7 +67,6 @@ public class DashboardPanel extends JPanel {
         
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        // ===== MAIN CONTENT PANEL =====
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(new Color(240, 248, 255));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -101,28 +97,27 @@ public class DashboardPanel extends JPanel {
         table.getTableHeader().setForeground(Color.WHITE);
         table.getTableHeader().setReorderingAllowed(false);
         table.getTableHeader().setPreferredSize(new Dimension(table.getTableHeader().getWidth(), 40));
-        
-        // lebar kolom
-        table.getColumnModel().getColumn(0).setPreferredWidth(50); // No
-        table.getColumnModel().getColumn(1).setPreferredWidth(100); // ID Bayi
-        table.getColumnModel().getColumn(2).setPreferredWidth(120); // Tanggal
-        table.getColumnModel().getColumn(3).setPreferredWidth(150); // Nama
-        table.getColumnModel().getColumn(4).setPreferredWidth(100); // Kelamin
-        table.getColumnModel().getColumn(5).setPreferredWidth(150); // Nama Ibu
-        table.getColumnModel().getColumn(6).setPreferredWidth(100); // BB
-        table.getColumnModel().getColumn(7).setPreferredWidth(100); // TB
-        table.getColumnModel().getColumn(8).setPreferredWidth(110); // BB Ideal
-        table.getColumnModel().getColumn(9).setPreferredWidth(100); // Status BB
-        table.getColumnModel().getColumn(10).setPreferredWidth(100); // Suhu
-        table.getColumnModel().getColumn(11).setPreferredWidth(120); // Status Suhu
-        table.getColumnModel().getColumn(12).setPreferredWidth(90); // Hepatitis B
-        table.getColumnModel().getColumn(13).setPreferredWidth(80); // BCG
-        table.getColumnModel().getColumn(14).setPreferredWidth(80); // Polio
-        table.getColumnModel().getColumn(15).setPreferredWidth(90); // Pentabio
-        table.getColumnModel().getColumn(16).setPreferredWidth(80); // PCV
-        table.getColumnModel().getColumn(17).setPreferredWidth(90); // Rotavirus
-        table.getColumnModel().getColumn(18).setPreferredWidth(80); // MR
-        table.getColumnModel().getColumn(19).setPreferredWidth(200); // Catatan
+
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        table.getColumnModel().getColumn(1).setPreferredWidth(100);
+        table.getColumnModel().getColumn(2).setPreferredWidth(120);
+        table.getColumnModel().getColumn(3).setPreferredWidth(150);
+        table.getColumnModel().getColumn(4).setPreferredWidth(100);
+        table.getColumnModel().getColumn(5).setPreferredWidth(150);
+        table.getColumnModel().getColumn(6).setPreferredWidth(100);
+        table.getColumnModel().getColumn(7).setPreferredWidth(100);
+        table.getColumnModel().getColumn(8).setPreferredWidth(110);
+        table.getColumnModel().getColumn(9).setPreferredWidth(100);
+        table.getColumnModel().getColumn(10).setPreferredWidth(100);
+        table.getColumnModel().getColumn(11).setPreferredWidth(120);
+        table.getColumnModel().getColumn(12).setPreferredWidth(90);
+        table.getColumnModel().getColumn(13).setPreferredWidth(80);
+        table.getColumnModel().getColumn(14).setPreferredWidth(80);
+        table.getColumnModel().getColumn(15).setPreferredWidth(90);
+        table.getColumnModel().getColumn(16).setPreferredWidth(80);
+        table.getColumnModel().getColumn(17).setPreferredWidth(90);
+        table.getColumnModel().getColumn(18).setPreferredWidth(80);
+        table.getColumnModel().getColumn(19).setPreferredWidth(200);
         
        
         table.getColumnModel().getColumn(0).setCellRenderer(new javax.swing.table.DefaultTableCellRenderer() {
@@ -139,8 +134,7 @@ public class DashboardPanel extends JPanel {
 
     private void loadRecentData() {
         java.util.List<String[]> allData = CSVHelper.readAll();
-        
-        // ngambil maks 10 data terbaru
+
         int startIndex = Math.max(0, allData.size() - 10);
         
         for (int i = startIndex; i < allData.size(); i++) {
@@ -161,8 +155,7 @@ public class DashboardPanel extends JPanel {
         double berat, tinggi;
         boolean hepB, bcg, polio, pentabio, pcv, rotavirus, mr;
         String catatan;
-        
-        // Deteksi format berdasarkan jumlah field
+
         if (d.length >= 16) {
             babyId = (d.length > 1 && d[1] != null) ? d[1] : "";
             nama = (d.length > 2 && d[2] != null) ? d[2] : "";
@@ -180,7 +173,6 @@ public class DashboardPanel extends JPanel {
             mr = parseBooleanSafe(d[14]);
             catatan = (d.length > 15 && d[15] != null && !d[15].equals("false")) ? d[15] : "";
         } else if (d.length >= 15) {
-            // Format dengan gender dan motherName tanpa ID
             babyId = "";
             nama = d[1];
             gender = (d.length > 2 && d[2] != null) ? d[2] : "";
@@ -197,7 +189,6 @@ public class DashboardPanel extends JPanel {
             mr = parseBooleanSafe(d[13]);
             catatan = (d.length > 14 && d[14] != null && !d[14].equals("false")) ? d[14] : "";
         } else if (d.length >= 13) {
-            //gada gender, motherName, dan ID
             babyId = "";
             nama = d[1];
             gender = "";
