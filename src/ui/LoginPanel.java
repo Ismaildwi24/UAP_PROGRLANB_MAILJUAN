@@ -31,7 +31,7 @@ public class LoginPanel extends JPanel {
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel subtitle = new JLabel(
-                "Aplikasi ini digunakan oleh tenaga medis untuk memantau tumbuh kembang bayi."
+                "Aplikasi ini digunakan oleh tenaga kesehatan untuk memantau tumbuh kembang bayi."
         );
         subtitle.setFont(new Font("SansSerif", Font.PLAIN, 14));
         subtitle.setForeground(new Color(0, 0, 139)); 
